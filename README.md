@@ -15,23 +15,27 @@ standard (ISO/IEC 18004) that costs nothing to generate. **OpenQR keeps it that 
 This repository is the **basic generator tool** — the reference open-source
 implementation. It is deliberately small and easy to fork.
 
-## Hosted version — free API & MCP server
+## Hosted version: free API, MCP server and editable codes
 
-Everything in this repo is and stays free. The hosted build at
-**[openqr.uk](https://openqr.uk)** adds an *optional* account layer for people who
-want editable codes and automation — same no-watermark, no-expiry ethos:
+Everything in this repo is and stays free, with no watermark and no expiry. The
+hosted build at **[openqr.uk](https://openqr.uk)** adds an *optional* account layer
+for people who want editable codes and automation:
 
-- **Dynamic / editable QR codes** with free scan analytics — change the destination
-  after you've printed it; no paywall, no expiry.
-- **Free REST API** — generate codes and manage dynamic codes programmatically.
+- **Dynamic / editable QR codes** with scan analytics. Change the destination after
+  you've printed it. **3 free** on a free account (7 days of scans by country);
+  unlimited on Pro at £9/month or £72/year, which also unlocks full analytics
+  history, town and region detail, device and referrer breakdowns with CSV export,
+  a branded subdomain, and password-protected codes.
+- **Free REST API.** Generate codes and manage dynamic codes programmatically.
   OpenAPI spec at [`/openapi.json`](https://openqr.uk/openapi.json); interactive docs
   at **[openqr.uk/api](https://openqr.uk/api)**.
-- **Hosted MCP server** — `https://openqr.uk/mcp` (Streamable HTTP, 13 tools).
+- **Hosted MCP server** at `https://openqr.uk/mcp` (Streamable HTTP, 14 tools).
   Generate and manage QR codes directly from Claude, Cursor or any MCP client. Listed
   in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=openqr).
 
-The static generator in this repository never calls any of that — it stays 100%
-client-side (see [Privacy](#privacy)).
+The static generator in this repository never calls any of that. It stays 100%
+client-side (see [Privacy](#privacy)), and none of it is required to use or
+self-host the generator.
 
 ## Features
 
