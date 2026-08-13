@@ -14,7 +14,6 @@ const FORMATS: { id: ExportFormat; label: string }[] = [
   { id: "png", label: "PNG" },
   { id: "svg", label: "SVG" },
   { id: "pdf", label: "PDF" },
-  { id: "jpeg", label: "JPEG" },
   { id: "webp", label: "WebP" },
 ];
 const SIZES = [512, 1024, 2048, 4096];
@@ -43,7 +42,7 @@ export function ExportBar({
     setBusy(true);
     try {
       const blob = await generateBlob(data, style, format, size);
-      const ext = format === "jpeg" ? "jpg" : format;
+      const ext = format;
       downloadBlob(blob, `openqr-${type}-${Date.now()}.${ext}`);
       trackEvent("downloaded", format);
       trackEvent("generated", type);

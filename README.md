@@ -41,7 +41,7 @@ self-host the generator.
 
 - **No watermarks, no size limits, no sign-up** — every feature is free
 - **Private by design** — codes are generated entirely in your browser; the content never touches a server
-- **Export anywhere** — PNG / JPEG / WebP up to 4096px, plus true-vector **SVG** and **PDF**
+- **Export anywhere** — PNG / WebP up to 4096px, plus true-vector **SVG** and **PDF**
 - **Full styling** — colours, gradients, dot & corner styles, logo embedding, "Scan me" frames
 - **Smart input** — paste a link or text and the type is auto-detected
 - **Rich payloads** — URL, text, email, phone, SMS, WhatsApp, Wi-Fi, and a map-based location picker

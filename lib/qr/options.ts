@@ -10,7 +10,7 @@ export type DotType =
 export type CornerSquareType = "square" | "dot" | "extra-rounded";
 export type CornerDotType = "square" | "dot";
 export type ErrorCorrectionLevel = "L" | "M" | "Q" | "H";
-export type ExportFormat = "png" | "jpeg" | "webp" | "svg" | "pdf";
+export type ExportFormat = "png" | "webp" | "svg" | "pdf";
 
 export interface QrStyle {
   fgColor: string;

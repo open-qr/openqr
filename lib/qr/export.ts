@@ -145,34 +145,20 @@ export async function generateBlob(
 
   if (style.frameEnabled) {
     const canvas = await compositeFrameCanvas(raw, style, size);
-    const mime = format === "jpeg" ? "image/jpeg" : format === "webp" ? "image/webp" : "image/png";
-    if (format === "jpeg") {
-      // flatten on white
-      const flat = document.createElement("canvas");
-      flat.width = canvas.width;
-      flat.height = canvas.height;
-      const fctx = flat.getContext("2d")!;
-      fctx.fillStyle = "#FFFFFF";
-      fctx.fillRect(0, 0, flat.width, flat.height);
-      fctx.drawImage(canvas, 0, 0);
-      return canvasToBlob(flat, mime, 0.92);
-    }
-    return canvasToBlob(canvas, mime, format === "webp" ? 0.92 : undefined);
+    const mime = format === "webp" ? "image/webp" : "image/png";
+    // WebP at max quality — effectively lossless for a two-colour code, and preserves alpha.
+    return canvasToBlob(canvas, mime, format === "webp" ? 1 : undefined);
   }
 
   if (format === "png") return raw;
-  // jpeg/webp without frame: re-encode the png through a canvas
+  // WebP without frame: re-encode the PNG through a canvas at max quality (keeps alpha).
   const bitmap = await createImageBitmap(raw);
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
-  if (format === "jpeg") {
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, size, size);
-  }
   ctx.drawImage(bitmap, 0, 0, size, size);
-  return canvasToBlob(canvas, format === "jpeg" ? "image/jpeg" : "image/webp", 0.92);
+  return canvasToBlob(canvas, "image/webp", 1);
 }
 
 async function svgToPdf(svgText: string): Promise<Blob> {
