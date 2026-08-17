@@ -7,7 +7,7 @@
   "homepage": "https://openqr.uk",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sam-moreton/openqr.git"
+    "url": "git+https://github.com/open-qr/openqr.git"
   },
   "author": "Sam Moreton",
   "scripts": {
