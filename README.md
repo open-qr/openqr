@@ -29,7 +29,7 @@ for people who want editable codes and automation:
 - **Free REST API.** Generate codes and manage dynamic codes programmatically.
   OpenAPI spec at [`/openapi.json`](https://openqr.uk/openapi.json); interactive docs
   at **[openqr.uk/api](https://openqr.uk/api)**.
-- **Hosted MCP server** at `https://openqr.uk/mcp` (Streamable HTTP, 14 tools).
+- **Hosted MCP server** at `https://openqr.uk/mcp` (Streamable HTTP, 17 tools).
   Generate and manage QR codes directly from Claude, Cursor or any MCP client. Listed
   in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=openqr).
 
