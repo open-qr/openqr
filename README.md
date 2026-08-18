@@ -37,6 +37,32 @@ The static generator in this repository never calls any of that. It stays 100%
 client-side (see [Privacy](#privacy)), and none of it is required to use or
 self-host the generator.
 
+## Tools
+
+The hosted MCP server at `https://openqr.uk/mcp` exposes these 17 tools. **Every tool
+requires a free API key** — create one at [openqr.uk/api](https://openqr.uk/api) and pass
+it as `Authorization: Bearer oqr_...` on the MCP connection.
+
+| Tool | What it does |
+| --- | --- |
+| `generate_qr` | Generate a static QR code from any text or URL. Returns a PNG image or SVG markup. |
+| `create_dynamic_qr` | Create an editable QR code whose destination you can change later without reprinting. |
+| `update_dynamic_qr` | Change a dynamic code's destination, label, custom short link, tags or folder. |
+| `get_dynamic_qr` | Get one code's full details: destination, short link, label, type, tags, folder, status, created date. |
+| `get_scans` | Scan statistics for a dynamic code. |
+| `list_dynamic_qr` | List your dynamic codes with id, short URL, destination, label and status. |
+| `delete_dynamic_qr` | Permanently delete a dynamic code. Its short link stops working. |
+| `bulk_create_dynamic_qr` | Create up to 200 dynamic codes at once. |
+| `list_folders` | List your folders. |
+| `create_folder` | Create a folder to organise codes. |
+| `delete_folder` | Delete a folder. Its codes are un-filed, not deleted. |
+| `list_themes` | List saved style themes. Apply one by passing its id or name as `theme`. |
+| `create_theme` | Save a reusable style theme (colours, dot and corner styles). |
+| `delete_theme` | Delete a saved theme. Codes already styled with it keep their look. |
+| `get_subdomain` | Show the branded subdomain on the account, and whether it is suspended. |
+| `set_subdomain` | Claim or change the branded subdomain so codes also resolve at `{name}.oqr.to`. Pro only. |
+| `clear_subdomain` | Release the branded subdomain. Codes stay live on the plain short link. |
+
 ## Features
 
 - **No watermarks, no size limits, no sign-up** — every feature is free
