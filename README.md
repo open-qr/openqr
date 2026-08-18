@@ -63,6 +63,12 @@ it as `Authorization: Bearer oqr_...` on the MCP connection.
 | `set_subdomain` | Claim or change the branded subdomain so codes also resolve at `{name}.oqr.to`. Pro only. |
 | `clear_subdomain` | Release the branded subdomain. Codes stay live on the plain short link. |
 
+It also exposes **5 resources** and **4 prompts**:
+
+- **Resources** are built-in QR style presets at `openqr://preset/classic`, `/teal`,
+  `/high-contrast`, `/dots` and `/classy`. Read one and pass its style to `create_theme`.
+- **Prompts** are `create_tracked_qr`, `bulk_qr_for_print`, `brand_a_qr` and `qr_scan_report`.
+
 ## Features
 
 - **No watermarks, no size limits, no sign-up** — every feature is free
