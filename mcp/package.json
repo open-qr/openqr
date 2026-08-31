@@ -1,0 +1,33 @@
+{
+  "name": "@open-qr/mcp",
+  "version": "1.0.0",
+  "description": "MCP server for OpenQR (https://openqr.uk): generate QR codes and create, edit and track dynamic (editable) QR codes with scan analytics. Bridges stdio MCP clients to the hosted endpoint.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "bin": {
+    "openqr-mcp": "index.js"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-qr/openqr.git",
+    "directory": "mcp"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "qr-code",
+    "qr",
+    "dynamic-qr",
+    "openqr"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0"
+  }
+}
