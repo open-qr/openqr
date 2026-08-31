@@ -6,6 +6,7 @@ browser — no tracking, no sign-up, no limits.
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-07B1B0.svg)](LICENSE)
 ![Next.js](https://img.shields.io/badge/Next.js-16-232E3A)
 ![No watermark](https://img.shields.io/badge/watermark-none-07B1B0)
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/openqr-mcp)
 
 Most online QR generators bait you with "free" and then add a watermark, cap your
 download size, hide vector export behind a paywall, or route your code through
