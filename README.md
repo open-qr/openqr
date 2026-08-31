@@ -32,6 +32,9 @@ for people who want editable codes and automation:
 - **Hosted MCP server** at `https://openqr.uk/mcp` (Streamable HTTP, 17 tools).
   Generate and manage QR codes directly from Claude, Cursor or any MCP client. Listed
   in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=openqr).
+  Remote-capable clients connect to that URL directly; stdio-only clients can
+  bridge to it with `npx -y @open-qr/mcp` and `OPENQR_API_KEY` set
+  ([details](./mcp/)).
 
 The static generator in this repository never calls any of that. It stays 100%
 client-side (see [Privacy](#privacy)), and none of it is required to use or
