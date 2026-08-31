@@ -1,6 +1,6 @@
 {
   "name": "@open-qr/mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for OpenQR (https://openqr.uk): generate QR codes and create, edit and track dynamic (editable) QR codes with scan analytics. Bridges stdio MCP clients to the hosted endpoint.",
   "license": "AGPL-3.0-only",
   "type": "module",
@@ -29,5 +29,6 @@
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0"
-  }
+  },
+  "mcpName": "uk.openqr/qr"
 }
