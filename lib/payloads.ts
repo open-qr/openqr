@@ -38,10 +38,10 @@ export function buildPayload(type: PayloadType, f: FieldValues): string {
     case "email": {
       const to = s(f.email);
       if (!to) return "";
-      const params = new URLSearchParams();
-      if (s(f.subject)) params.set("subject", s(f.subject));
-      if (s(f.body)) params.set("body", s(f.body));
-      const q = params.toString();
+      const params: string[] = [];
+      if (s(f.subject)) params.push(`subject=${encodeURIComponent(s(f.subject))}`);
+      if (s(f.body)) params.push(`body=${encodeURIComponent(s(f.body))}`);
+      const q = params.join("&");
       return `mailto:${to}${q ? `?${q}` : ""}`;
     }
     case "phone":
