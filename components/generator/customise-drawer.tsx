@@ -6,6 +6,7 @@ import { QrCanvas } from "@/components/generator/qr-canvas";
 import { StylePanel } from "@/components/generator/style-panel";
 import { useQrStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n/locale-provider";
 
 export function CustomiseDrawer({
   open,
@@ -17,16 +18,15 @@ export function CustomiseDrawer({
   data: string;
 }) {
   const style = useQrStore((s) => s.style);
+  const { t } = useI18n();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="p-0">
         {/* Fixed header — live QR always in view */}
         <div className="shrink-0 border-b bg-card/40 px-5 pb-5 pt-5">
-          <SheetTitle className="text-center text-sm font-semibold">Customise design</SheetTitle>
-          <SheetDescription className="sr-only">
-            Adjust the colours, shape, logo and frame of your QR code. The preview updates live.
-          </SheetDescription>
+          <SheetTitle className="text-center text-sm font-semibold">{t("generator.customiseDesign")}</SheetTitle>
+          <SheetDescription className="sr-only">{t("customiseDrawer.description")}</SheetDescription>
           <div className="mt-4 flex justify-center">
             <div className="rounded-xl border bg-card p-2.5 shadow-sm">
               <div
@@ -59,7 +59,7 @@ export function CustomiseDrawer({
         {/* Footer */}
         <div className="shrink-0 border-t p-4">
           <SheetClose asChild>
-            <Button className="w-full">Done</Button>
+            <Button className="w-full">{t("common.done")}</Button>
           </SheetClose>
         </div>
       </SheetContent>

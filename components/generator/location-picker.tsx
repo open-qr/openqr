@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useQrStore } from "@/lib/store";
 import { trackEvent } from "@/lib/analytics";
+import { useI18n } from "@/lib/i18n/locale-provider";
 
 const DEFAULT_CENTER: [number, number] = [51.5074, -0.1278]; // London
 
@@ -50,6 +51,7 @@ function MapController({ point, flyKey }: { point: Pt | null; flyKey: number }) 
 }
 
 export function LocationPicker() {
+  const { t, locale } = useI18n();
   const values = useQrStore((s) => s.values.geo);
   const setField = useQrStore((s) => s.setField);
 
@@ -80,7 +82,7 @@ export function LocationPicker() {
 
   const useMyLocation = () => {
     if (!navigator.geolocation) {
-      setError("Your browser doesn’t support location.");
+      setError(t("location.noGeoSupport"));
       return;
     }
     setLocating(true);
@@ -92,7 +94,7 @@ export function LocationPicker() {
         setLocating(false);
       },
       () => {
-        setError("Couldn’t get your location — allow access or search instead.");
+        setError(t("location.gpsError"));
         setLocating(false);
       },
       { enableHighAccuracy: true, timeout: 10000 }
@@ -108,14 +110,14 @@ export function LocationPicker() {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=${encodeURIComponent(q)}`,
-        { headers: { "Accept-Language": "en" } }
+        { headers: { "Accept-Language": locale } }
       );
       const data: NominatimResult[] = await res.json();
       setResults(data);
       trackEvent("location_search", undefined, "Location");
-      if (data.length === 0) setError("No matches found.");
+      if (data.length === 0) setError(t("location.noMatches"));
     } catch {
-      setError("Search failed — check your connection.");
+      setError(t("location.searchFailed"));
     } finally {
       setSearching(false);
     }
@@ -136,9 +138,9 @@ export function LocationPicker() {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search an address or place…"
+            placeholder={t("location.searchPlaceholder")}
             className="pl-9"
-            aria-label="Search address"
+            aria-label={t("location.searchAriaLabel")}
           />
           {results.length > 0 && (
             <ul className="absolute z-[1000] mt-1 max-h-56 w-full overflow-auto rounded-lg border bg-popover p-1 shadow-md">
@@ -156,12 +158,12 @@ export function LocationPicker() {
             </ul>
           )}
         </div>
-        <Button type="submit" variant="outline" size="icon" aria-label="Search" disabled={searching}>
+        <Button type="submit" variant="outline" size="icon" aria-label={t("location.search")} disabled={searching}>
           {searching ? <Loader2 className="animate-spin" /> : <Search />}
         </Button>
         <Button type="button" variant="outline" onClick={useMyLocation} disabled={locating} className="shrink-0">
           {locating ? <Loader2 className="animate-spin" /> : <LocateFixed />}
-          <span className="hidden sm:inline">My location</span>
+          <span className="hidden sm:inline">{t("location.myLocation")}</span>
         </Button>
       </form>
 
@@ -201,10 +203,11 @@ export function LocationPicker() {
       <p className="text-xs text-muted-foreground">
         {point ? (
           <>
-            Selected: <span className="font-mono text-foreground">{point.lat}, {point.lng}</span> — drag the pin or tap the map to adjust.
+            {t("location.selectedPrefix")}{" "}
+            <span className="font-mono text-foreground">{point.lat}, {point.lng}</span> {t("location.selectedSuffix")}
           </>
         ) : (
-          "Search, use your location, or tap the map to drop a pin."
+          t("location.helper")
         )}
       </p>
     </div>

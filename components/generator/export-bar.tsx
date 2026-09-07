@@ -9,6 +9,7 @@ import { generateBlob, downloadBlob } from "@/lib/qr/export";
 import type { ExportFormat } from "@/lib/qr/options";
 import { trackEvent } from "@/lib/analytics";
 import type { PayloadType } from "@/lib/payloads";
+import { useI18n } from "@/lib/i18n/locale-provider";
 
 const FORMATS: { id: ExportFormat; label: string }[] = [
   { id: "png", label: "PNG" },
@@ -30,6 +31,7 @@ export function ExportBar({
   onSuccess?: (how: "saved" | "copied") => void;
 }) {
   const style = useQrStore((s) => s.style);
+  const { t } = useI18n();
   const [format, setFormat] = useState<ExportFormat>("png");
   const [size, setSize] = useState(1024);
   const [busy, setBusy] = useState(false);
@@ -49,7 +51,7 @@ export function ExportBar({
       onSuccess?.("saved");
     } catch (e) {
       console.error(e);
-      alert("Sorry — export failed. Try a different format or a smaller size.");
+      alert(t("generator.exportFailed"));
     } finally {
       setBusy(false);
     }
@@ -65,7 +67,7 @@ export function ExportBar({
       onSuccess?.("copied");
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      alert("Clipboard image copy isn’t supported in this browser — use Download instead.");
+      alert(t("generator.clipboardUnsupported"));
     }
   };
 
@@ -73,10 +75,10 @@ export function ExportBar({
     <div className="flex flex-wrap items-stretch justify-center gap-2">
       <Button size="lg" onClick={onDownload} disabled={disabled || busy} className="min-w-40 flex-1 sm:flex-none">
         {busy ? <Loader2 className="animate-spin" /> : <Download />}
-        Download
+        {t("common.download")}
       </Button>
       <Select value={format} onValueChange={(v) => setFormat(v as ExportFormat)}>
-        <SelectTrigger className="h-12 w-[104px]" aria-label="Format" disabled={disabled}>
+        <SelectTrigger className="h-12 w-[104px]" aria-label={t("exportBar.formatAria")} disabled={disabled}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -86,8 +88,8 @@ export function ExportBar({
         </SelectContent>
       </Select>
       <Select value={String(size)} onValueChange={(v) => setSize(Number(v))} disabled={disabled || isVector}>
-        <SelectTrigger className="h-12 w-[104px]" aria-label="Size">
-          <SelectValue placeholder="Size" />
+        <SelectTrigger className="h-12 w-[104px]" aria-label={t("exportBar.sizeAria")}>
+          <SelectValue placeholder={t("exportBar.sizePlaceholder")} />
         </SelectTrigger>
         <SelectContent>
           {SIZES.map((s) => (
@@ -95,7 +97,14 @@ export function ExportBar({
           ))}
         </SelectContent>
       </Select>
-      <Button variant="outline" size="icon" className="h-12 w-12" onClick={onCopy} disabled={disabled} aria-label="Copy image">
+      <Button
+        variant="outline"
+        size="icon"
+        className="h-12 w-12"
+        onClick={onCopy}
+        disabled={disabled}
+        aria-label={t("exportBar.copyImageAria")}
+      >
         {copied ? <Check className="text-primary" /> : <Copy />}
       </Button>
     </div>

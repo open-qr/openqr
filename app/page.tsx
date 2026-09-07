@@ -1,16 +1,17 @@
 import { Generator } from "@/components/generator/generator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LocaleToggle } from "@/components/locale-toggle";
+import { Footer } from "@/components/site/footer";
 
 export default function Home() {
   return (
     <main className="flex min-h-dvh flex-col">
-      <div className="flex justify-end p-4">
+      <div className="flex justify-end gap-1 p-4">
+        <LocaleToggle />
         <ThemeToggle />
       </div>
       <Generator />
-      <footer className="mx-auto w-full max-w-xl px-4 py-10 text-center text-xs text-muted-foreground">
-        Free &amp; open source (AGPL-3.0). Generated entirely in your browser — no tracking, no sign-up.
-      </footer>
+      <Footer />
     </main>
   );
 }
