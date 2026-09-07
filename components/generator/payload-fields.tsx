@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -44,6 +45,22 @@ function Text({ k, label, placeholder, type = "text" }: { k: string; label: stri
   );
 }
 
+function TextArea({ k, label, placeholder }: { k: string; label: string; placeholder?: string }) {
+  const { values, setField } = useStructured();
+  const id = `f-${k}`;
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      <Textarea
+        id={id}
+        placeholder={placeholder}
+        value={String(values[k] ?? "")}
+        onChange={(e) => setField(k, e.target.value)}
+      />
+    </div>
+  );
+}
+
 export function PayloadFields() {
   const { type, values, setField } = useStructured();
   const v = values;
@@ -54,21 +71,21 @@ export function PayloadFields() {
         <div className="space-y-3">
           <Text k="email" label="Email address" placeholder="hello@example.com" type="email" />
           <Text k="subject" label="Subject (optional)" />
-          <Text k="body" label="Message (optional)" />
+          <TextArea k="body" label="Message (optional)" />
         </div>
       );
     case "sms":
       return (
         <div className="space-y-3">
           <Text k="phone" label="Phone number" placeholder="+44 7000 000000" type="tel" />
-          <Text k="message" label="Message (optional)" />
+          <TextArea k="message" label="Message (optional)" />
         </div>
       );
     case "whatsapp":
       return (
         <div className="space-y-3">
           <Text k="phone" label="Phone number (with country code)" placeholder="447000000000" type="tel" />
-          <Text k="message" label="Pre-filled message (optional)" />
+          <TextArea k="message" label="Pre-filled message (optional)" />
         </div>
       );
     case "wifi":
