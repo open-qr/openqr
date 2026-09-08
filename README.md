@@ -23,7 +23,7 @@ hosted build at **[openqr.uk](https://openqr.uk)** adds an *optional* account la
 for people who want editable codes and automation:
 
 - **Dynamic / editable QR codes** with scan analytics. Change the destination after
-  you've printed it. **3 free** on a free account (7 days of scans by country);
+  you've printed it. **1 free** on a free account (7 days of scans by country);
   unlimited on Pro at £9/month or £72/year, which also unlocks full analytics
   history, town and region detail, device and referrer breakdowns with CSV export,
   a branded subdomain, and password-protected codes.
