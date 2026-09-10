@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "license": "AGPL-3.0-only",
-  "description": "Free, open-source, watermark-free QR code generator. Runs entirely in the browser \u2014 no tracking, no sign-up, no limits.",
+  "description": "Free, open-source, watermark-free QR code generator. Runs entirely in the browser — no tracking, no sign-up, no limits.",
   "homepage": "https://openqr.uk",
   "repository": {
     "type": "git",
@@ -50,5 +50,10 @@
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3"
   },
-  "packageManager": "pnpm@10.16.1"
+  "packageManager": "pnpm@10.16.1",
+  "pnpm": {
+    "patchedDependencies": {
+      "qr-code-styling": "patches/qr-code-styling.patch"
+    }
+  }
 }
