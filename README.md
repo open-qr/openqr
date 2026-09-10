@@ -24,9 +24,10 @@ for people who want editable codes and automation:
 
 - **Dynamic / editable QR codes** with scan analytics. Change the destination after
   you've printed it. **1 free** on a free account (7 days of scans by country);
-  unlimited on Pro at £9/month or £72/year, which also unlocks full analytics
-  history, town and region detail, device and referrer breakdowns with CSV export,
-  a branded subdomain, and password-protected codes.
+  **25 editable codes** on Pro at £9/month or £90/year, which also unlocks a 90-day
+  scan-analytics window plus town and region detail, device and referrer breakdowns
+  with CSV export, a branded subdomain, and password-protected codes.
+  Existing subscribers keep their current plan and price.
 - **Free REST API.** Generate codes and manage dynamic codes programmatically.
   OpenAPI spec at [`/openapi.json`](https://openqr.uk/openapi.json); interactive docs
   at **[openqr.uk/api](https://openqr.uk/api)**.
