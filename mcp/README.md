@@ -4,9 +4,9 @@ MCP server for [OpenQR](https://openqr.uk): generate QR codes and create, edit
 and track dynamic (editable) QR codes with scan analytics.
 
 A thin stdio-to-HTTP bridge: it forwards MCP traffic between your client and the
-hosted endpoint at `https://openqr.uk/mcp`. No tools are implemented here, so
-the tool list always matches what the server exposes (currently 17 tools, 4
-prompts, 5 resources).
+hosted endpoint at `https://openqr.uk/mcp`. No tools are implemented here, so the
+tool list always matches what the hosted server exposes — run `tools/list` from
+your client to see the current set.
 
 ## Setup
 
