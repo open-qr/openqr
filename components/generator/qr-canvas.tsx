@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import type QRCodeStyling from "qr-code-styling";
 import { buildQrOptions, type QrStyle } from "@/lib/qr/options";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n/locale-provider";
 
 interface Props {
   data: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function QrCanvas({ data, style, size = 280, className }: Props) {
+  const { t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const qrRef = useRef<QRCodeStyling | null>(null);
 
@@ -39,7 +41,7 @@ export function QrCanvas({ data, style, size = 280, className }: Props) {
   return (
     <div
       ref={ref}
-      aria-label="QR code preview"
+      aria-label={t("qrCanvas.preview")}
       role="img"
       className={cn("flex items-center justify-center [&_canvas]:!h-auto [&_canvas]:!w-full", className)}
     />

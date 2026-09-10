@@ -16,8 +16,12 @@ import { decodeConfig } from "@/lib/config-url";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/site/logo";
+import { useI18n } from "@/lib/i18n/locale-provider";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
-const STRUCTURED_LABEL: Record<string, string> = Object.fromEntries(STRUCTURED_TYPES.map((t) => [t.id, t.label]));
+const STRUCTURED_LABEL_KEY: Record<string, TranslationKey> = Object.fromEntries(
+  STRUCTURED_TYPES.map((t) => [t.id, t.labelKey])
+);
 
 export interface GeneratorProps {
   /** Render as an embeddable widget (no full-page chrome). */
@@ -31,6 +35,7 @@ export interface GeneratorProps {
 }
 
 export function Generator({ embedded = false, header, renderSuccess }: GeneratorProps) {
+  const { t } = useI18n();
   const input = useQrStore((s) => s.input);
   const override = useQrStore((s) => s.override);
   const structured = useQrStore((s) => s.structured);
@@ -81,9 +86,11 @@ export function Generator({ embedded = false, header, renderSuccess }: Generator
               onClick={() => setStructured(null)}
               className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              <ArrowLeft className="h-3.5 w-3.5" /> Back to link or text
+              <ArrowLeft className="h-3.5 w-3.5" /> {t("generator.backToLinkOrText")}
             </button>
-            <h2 className="text-sm font-semibold">{STRUCTURED_LABEL[structured]} QR code</h2>
+            <h2 className="text-sm font-semibold">
+              {t("generator.structuredTitle", { type: t(STRUCTURED_LABEL_KEY[structured]) })}
+            </h2>
             <PayloadFields />
           </div>
         ) : (
@@ -92,9 +99,7 @@ export function Generator({ embedded = false, header, renderSuccess }: Generator
             {!hasData && (
               <div className="fade-up space-y-3">
                 <MoreTypes />
-                <p className="text-center text-xs text-muted-foreground">
-                  Free &amp; open source. No watermark, no limits, no sign-up.
-                </p>
+                <p className="text-center text-xs text-muted-foreground">{t("generator.freeOpenSource")}</p>
               </div>
             )}
           </>
@@ -127,7 +132,7 @@ export function Generator({ embedded = false, header, renderSuccess }: Generator
               {warnings.map((w) => (
                 <p key={w} className="flex items-start gap-2 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
                   <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  {w}
+                  {t(w)}
                 </p>
               ))}
             </div>
@@ -147,7 +152,7 @@ export function Generator({ embedded = false, header, renderSuccess }: Generator
               className="mx-auto flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <Sliders className="h-4 w-4" />
-              Customise design
+              {t("generator.customiseDesign")}
             </button>
           </div>
 

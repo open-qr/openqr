@@ -14,6 +14,8 @@ import { encodeConfig } from "@/lib/config-url";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import type { CornerDotType, CornerSquareType, DotType, ErrorCorrectionLevel } from "@/lib/qr/options";
+import { useI18n } from "@/lib/i18n/locale-provider";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 const LOGO_ACCEPT = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"];
 const LOGO_MAX_BYTES = 2 * 1024 * 1024; // 2 MB
@@ -45,6 +47,7 @@ function InfoHint({ label, children }: { label: string; children: React.ReactNod
 }
 
 function ShareButton() {
+  const { t } = useI18n();
   const [done, setDone] = useState(false);
   const onShare = async () => {
     const st = useQrStore.getState();
@@ -56,13 +59,13 @@ function ShareButton() {
       setDone(true);
       setTimeout(() => setDone(false), 1800);
     } catch {
-      window.prompt("Copy your share link:", url);
+      window.prompt(t("style.copyLink"), url);
     }
   };
   return (
     <Button variant="outline" size="sm" onClick={onShare} className="w-full">
       {done ? <Check className="text-primary" /> : <LinkIcon />}
-      {done ? "Link copied" : "Copy a link to this design"}
+      {done ? t("style.linkCopied") : t("style.copyLink")}
     </Button>
   );
 }
@@ -90,7 +93,18 @@ const CORNER_SQUARE: CornerSquareType[] = ["square", "dot", "extra-rounded"];
 const CORNER_DOT: CornerDotType[] = ["square", "dot"];
 const EC: ErrorCorrectionLevel[] = ["L", "M", "Q", "H"];
 
+const SHAPE_KEY: Record<string, TranslationKey> = {
+  square: "shape.square",
+  dots: "shape.dots",
+  dot: "shape.dot",
+  rounded: "shape.rounded",
+  classy: "shape.classy",
+  "classy-rounded": "shape.classyRounded",
+  "extra-rounded": "shape.extraRounded",
+};
+
 export function StylePanel() {
+  const { t } = useI18n();
   const style = useQrStore((s) => s.style);
   const setStyle = useQrStore((s) => s.setStyle);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -100,11 +114,11 @@ export function StylePanel() {
   const onLogo = (file: File | undefined | null) => {
     if (!file) return;
     if (!LOGO_ACCEPT.includes(file.type)) {
-      setLogoError("Unsupported file. Use PNG, JPG, SVG or WebP.");
+      setLogoError(t("style.logoUnsupported"));
       return;
     }
     if (file.size > LOGO_MAX_BYTES) {
-      setLogoError("File too large — keep it under 2 MB.");
+      setLogoError(t("style.logoTooLarge"));
       return;
     }
     setLogoError(null);
@@ -124,31 +138,35 @@ export function StylePanel() {
     <div className="space-y-6">
       {/* Colors */}
       <section className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Colours</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("style.colours")}</h3>
         <div className="grid grid-cols-2 gap-3">
-          <ColorField label="Foreground" value={style.fgColor} onChange={(v) => setStyle({ fgColor: v })} />
-          <ColorField label="Background" value={style.bgColor} onChange={(v) => setStyle({ bgColor: v })} />
+          <ColorField label={t("style.foreground")} value={style.fgColor} onChange={(v) => setStyle({ fgColor: v })} />
+          <ColorField label={t("style.background")} value={style.bgColor} onChange={(v) => setStyle({ bgColor: v })} />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="transparent">Transparent background</Label>
+          <Label htmlFor="transparent">{t("style.transparentBackground")}</Label>
           <Switch id="transparent" checked={style.transparent} onCheckedChange={(c) => setStyle({ transparent: c })} />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="gradient">Gradient</Label>
+          <Label htmlFor="gradient">{t("style.gradient")}</Label>
           <Switch id="gradient" checked={style.useGradient} onCheckedChange={(c) => setStyle({ useGradient: c })} />
         </div>
         {style.useGradient && (
           <div className="grid grid-cols-2 gap-3">
-            <ColorField label="Gradient colour" value={style.gradientColor} onChange={(v) => setStyle({ gradientColor: v })} />
+            <ColorField
+              label={t("style.gradientColour")}
+              value={style.gradientColor}
+              onChange={(v) => setStyle({ gradientColor: v })}
+            />
             <div className="space-y-1.5">
-              <Label>Style</Label>
+              <Label>{t("style.styleLabel")}</Label>
               <Select value={style.gradientType} onValueChange={(v) => setStyle({ gradientType: v as "linear" | "radial" })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="linear">Linear</SelectItem>
-                  <SelectItem value="radial">Radial</SelectItem>
+                  <SelectItem value="linear">{t("style.linear")}</SelectItem>
+                  <SelectItem value="radial">{t("style.radial")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -158,32 +176,32 @@ export function StylePanel() {
 
       {/* Shape */}
       <section className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Shape</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("style.shape")}</h3>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="space-y-1.5">
-            <Label>Dots</Label>
+            <Label>{t("style.dots")}</Label>
             <Select value={style.dotType} onValueChange={(v) => setStyle({ dotType: v as DotType })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {DOT_TYPES.map((t) => <SelectItem key={t} value={t}>{cap(t)}</SelectItem>)}
+                {DOT_TYPES.map((dt) => <SelectItem key={dt} value={dt}>{t(SHAPE_KEY[dt])}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label>Corner</Label>
+            <Label>{t("style.corner")}</Label>
             <Select value={style.cornerSquareType} onValueChange={(v) => setStyle({ cornerSquareType: v as CornerSquareType })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {CORNER_SQUARE.map((t) => <SelectItem key={t} value={t}>{cap(t)}</SelectItem>)}
+                {CORNER_SQUARE.map((ct) => <SelectItem key={ct} value={ct}>{t(SHAPE_KEY[ct])}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label>Corner dot</Label>
+            <Label>{t("style.cornerDot")}</Label>
             <Select value={style.cornerDotType} onValueChange={(v) => setStyle({ cornerDotType: v as CornerDotType })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {CORNER_DOT.map((t) => <SelectItem key={t} value={t}>{cap(t)}</SelectItem>)}
+                {CORNER_DOT.map((cd) => <SelectItem key={cd} value={cd}>{t(SHAPE_KEY[cd])}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -193,14 +211,14 @@ export function StylePanel() {
       {/* Logo */}
       <section className="space-y-3">
         <div className="flex items-center gap-1.5">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Logo</h3>
-          <InfoHint label="Logo file requirements">
-            <p className="mb-1.5 font-medium text-foreground">Logo requirements</p>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("style.logo")}</h3>
+          <InfoHint label={t("style.logoRequirementsAria")}>
+            <p className="mb-1.5 font-medium text-foreground">{t("style.logoRequirementsTitle")}</p>
             <ul className="list-disc space-y-0.5 pl-4">
-              <li>PNG, JPG, SVG or WebP</li>
-              <li>Max 2 MB</li>
-              <li>Square works best; a transparent PNG looks cleanest</li>
-              <li>Keep it small — large logos can stop the code scanning</li>
+              <li>{t("style.logoReqFormat")}</li>
+              <li>{t("style.logoReqSize")}</li>
+              <li>{t("style.logoReqSquare")}</li>
+              <li>{t("style.logoReqSmall")}</li>
             </ul>
           </InfoHint>
         </div>
@@ -232,10 +250,10 @@ export function StylePanel() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={style.logo} alt="logo" className="h-10 w-10 rounded border object-contain" />
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
-              Replace
+              {t("style.replace")}
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setStyle({ logo: null })}>
-              <X className="h-4 w-4" /> Remove
+              <X className="h-4 w-4" /> {t("style.remove")}
             </Button>
           </div>
         ) : (
@@ -255,9 +273,9 @@ export function StylePanel() {
           >
             <ImageUp className={cn("h-6 w-6", dragging ? "text-primary" : "text-muted-foreground")} />
             <span className="text-sm font-medium">
-              {dragging ? "Drop to upload" : "Drag & drop a logo, or click to browse"}
+              {dragging ? t("style.dropToUpload") : t("style.dragDropLogo")}
             </span>
-            <span className="text-xs text-muted-foreground">PNG, JPG, SVG or WebP · max 2 MB</span>
+            <span className="text-xs text-muted-foreground">{t("style.logoHint")}</span>
           </button>
         )}
 
@@ -265,7 +283,7 @@ export function StylePanel() {
 
         {style.logo && (
           <div className="space-y-1.5">
-            <Label>Logo size — {Math.round(style.logoSize * 100)}%</Label>
+            <Label>{t("style.logoSize", { percent: Math.round(style.logoSize * 100) })}</Label>
             <Slider min={0.1} max={0.5} step={0.01} value={[style.logoSize]} onValueChange={([v]) => setStyle({ logoSize: v })} />
           </div>
         )}
@@ -273,19 +291,19 @@ export function StylePanel() {
 
       {/* Advanced */}
       <section className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Advanced</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("style.advanced")}</h3>
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label>Error correction</Label>
+            <Label>{t("style.errorCorrection")}</Label>
             <Select value={style.errorCorrectionLevel} onValueChange={(v) => setStyle({ errorCorrectionLevel: v as ErrorCorrectionLevel })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {EC.map((t) => <SelectItem key={t} value={t}>{t} {EC_LABEL[t]}</SelectItem>)}
+                {EC.map((ec) => <SelectItem key={ec} value={ec}>{ec} {EC_LABEL[ec]}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label>Margin — {style.margin}px</Label>
+            <Label>{t("style.margin", { value: style.margin })}</Label>
             <Slider min={0} max={40} step={1} value={[style.margin]} onValueChange={([v]) => setStyle({ margin: v })} />
           </div>
         </div>
@@ -293,9 +311,9 @@ export function StylePanel() {
 
       {/* Frame */}
       <section className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Frame</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("style.frame")}</h3>
         <div className="flex items-center justify-between">
-          <Label htmlFor="frame">Add a “Scan me” frame</Label>
+          <Label htmlFor="frame">{t("style.addFrame")}</Label>
           <Switch
             id="frame"
             checked={style.frameEnabled}
@@ -307,7 +325,7 @@ export function StylePanel() {
         </div>
         {style.frameEnabled && (
           <div className="space-y-1.5">
-            <Label htmlFor="frame-text">Caption</Label>
+            <Label htmlFor="frame-text">{t("style.caption")}</Label>
             <Input id="frame-text" value={style.frameText} onChange={(e) => setStyle({ frameText: e.target.value })} maxLength={24} />
           </div>
         )}
@@ -321,4 +339,3 @@ export function StylePanel() {
 }
 
 const EC_LABEL: Record<ErrorCorrectionLevel, string> = { L: "(7%)", M: "(15%)", Q: "(25%)", H: "(30%)" };
-const cap = (s: string) => s.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase());

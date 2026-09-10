@@ -1,4 +1,5 @@
 import type { PayloadType } from "@/lib/payloads";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 /** Types expressible as a single free-text string (the "smart input" modes). */
 export type SmartType = "url" | "text" | "email" | "phone";
@@ -20,11 +21,11 @@ export function detectType(raw: string): SmartType {
   return "text";
 }
 
-export const SMART_LABELS: Record<SmartType, string> = {
-  url: "Link",
-  text: "Text",
-  email: "Email",
-  phone: "Phone",
+export const SMART_LABEL_KEYS: Record<SmartType, TranslationKey> = {
+  url: "type.url",
+  text: "type.text",
+  email: "type.email",
+  phone: "type.phone",
 };
 
 /** Map a smart string to the field object the payload builder expects. */
@@ -44,10 +45,10 @@ export function smartFields(type: SmartType, input: string): Record<string, stri
 export const SMART_TYPES: SmartType[] = ["url", "text", "email", "phone"];
 
 /** Structured types that need their own multi-field form. */
-export const STRUCTURED_TYPES: { id: PayloadType; label: string }[] = [
-  { id: "wifi", label: "Wi-Fi" },
-  { id: "geo", label: "Location" },
-  { id: "email", label: "Email (with subject)" },
-  { id: "sms", label: "SMS" },
-  { id: "whatsapp", label: "WhatsApp" },
+export const STRUCTURED_TYPES: { id: PayloadType; labelKey: TranslationKey }[] = [
+  { id: "wifi", labelKey: "type.wifi" },
+  { id: "geo", labelKey: "type.geo" },
+  { id: "email", labelKey: "type.emailWithSubject" },
+  { id: "sms", labelKey: "type.sms" },
+  { id: "whatsapp", labelKey: "type.whatsapp" },
 ];
