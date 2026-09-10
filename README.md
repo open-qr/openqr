@@ -42,6 +42,33 @@ The static generator in this repository never calls any of that. It stays 100%
 client-side (see [Privacy](#privacy)), and none of it is required to use or
 self-host the generator.
 
+### Connecting an MCP client
+
+Get a free key at [openqr.uk/api](https://openqr.uk/api), then point your client
+at the server with the key as an auth header.
+
+Claude Code:
+
+```bash
+claude mcp add --transport http openqr https://openqr.uk/mcp \
+  --header "Authorization: Bearer oqr_YOUR_KEY"
+```
+
+Cursor (`~/.cursor/mcp.json`), and any other client that speaks Streamable HTTP:
+
+```json
+{
+  "mcpServers": {
+    "openqr": {
+      "url": "https://openqr.uk/mcp",
+      "headers": {
+        "Authorization": "Bearer oqr_YOUR_KEY"
+      }
+    }
+  }
+}
+```
+
 ## Tools
 
 The hosted MCP server at `https://openqr.uk/mcp` exposes these 17 tools. **Every tool
