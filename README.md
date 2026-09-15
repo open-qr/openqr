@@ -16,6 +16,9 @@ standard (ISO/IEC 18004) that costs nothing to generate. **OpenQR keeps it that 
 This repository is the **basic generator tool** — the reference open-source
 implementation. It is deliberately small and easy to fork.
 
+If OpenQR is useful to you, a star on the repository helps other
+people find it. That is the whole ask.
+
 ## Hosted version: free API, MCP server and editable codes
 
 Everything in this repo is and stays free, with no watermark and no expiry. The
