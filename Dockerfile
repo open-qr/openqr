@@ -16,7 +16,10 @@ WORKDIR /app
 # Deps: install dependencies with a frozen lockfile (cached layer)
 ################################################################################
 FROM base AS deps
+# patches/ must be present for install: package.json declares qr-code-styling
+# as a pnpm patchedDependency and pnpm reads the patch file before resolving.
 COPY package.json pnpm-lock.yaml ./
+COPY patches ./patches
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
@@ -34,6 +37,11 @@ RUN pnpm build
 # Runner: minimal, non-root, read-only-friendly production image
 ################################################################################
 FROM node:${NODE_VERSION} AS runner
+
+LABEL org.opencontainers.image.title="OpenQR" \
+      org.opencontainers.image.description="Free, open-source, watermark-free QR code generator. Runs entirely in your browser." \
+      org.opencontainers.image.licenses="AGPL-3.0-only" \
+      org.opencontainers.image.source="https://github.com/open-qr/openqr"
 
 # tini reaps zombies and forwards signals correctly to `node` as PID 1,
 # so `docker stop` / SIGTERM shut the server down cleanly.
@@ -58,6 +66,8 @@ RUN mkdir -p .next/cache/images && chown -R nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# AGPL hygiene: the licence and third-party notices travel inside the image.
+COPY --from=builder --chown=nextjs:nodejs /app/LICENSE /app/NOTICE ./
 
 USER nextjs
 

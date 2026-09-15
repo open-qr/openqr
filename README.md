@@ -127,7 +127,38 @@ pnpm start      # serves on :3011 (standalone output)
 
 It's a standard Next.js app — host it anywhere (a VPS, a Raspberry Pi, Cloudflare,
 behind any reverse proxy). It needs **no environment variables, no database, no
-secrets** to run.
+secrets** to run. The dev/start scripts above use port **3011**; the Docker
+image below serves on **3000**. The only configuration either way is `PORT`.
+
+## Deploy (Docker image)
+
+A multi-arch image (`linux/amd64`, `linux/arm64`) is published to GHCR on every
+release tag:
+
+```bash
+docker run -d --name openqr --restart unless-stopped -p 3000:3000 ghcr.io/open-qr/openqr:latest
+```
+
+Or with [`docker-compose.yml`](./docker-compose.yml):
+
+```bash
+docker compose up -d          # update later: docker compose pull && docker compose up -d
+```
+
+Pin a version tag in production (`ghcr.io/open-qr/openqr:1.0.0`); `latest`
+moves with every release. The container is a prebuilt, non-root standalone
+server with a healthcheck, and carries `LICENSE` and `NOTICE` inside the image.
+
+### One-click deploys
+
+| Host | Link | Notes |
+|---|---|---|
+| [DigitalOcean App Platform](https://cloud.digitalocean.com/apps/new?repo=https://github.com/open-qr/openqr/tree/main) | 1-click button | Reads [`.do/deploy.template.yaml`](./.do/deploy.template.yaml); smallest instance, port 3000 |
+| [Render](https://render.com/deploy?repo=https://github.com/open-qr/openqr) | Blueprint button | Reads [`render.yaml`](./render.yaml); assumes a paid instance (Render's free tier sleeps) |
+| Koyeb | Deploys from the image | Any public `ghcr.io/open-qr/openqr` tag, no repo build |
+
+Deploying through any of these adds no terms beyond AGPL-3.0: the source is
+this repository, and the image carries the licence and third-party notices.
 
 ## Embedding
 

@@ -1,0 +1,11 @@
+# Self-host OpenQR from the published image. Pin a version tag in production
+# (check https://github.com/open-qr/openqr/releases); `latest` moves with every
+# release. Updates: `docker compose pull && docker compose up -d`.
+# Put a reverse proxy (Caddy, nginx, Traefik) in front for TLS; the container
+# serves plain HTTP on 3000.
+services:
+  openqr:
+    image: ghcr.io/open-qr/openqr:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
