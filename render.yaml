@@ -1,0 +1,11 @@
+# Render blueprint for the "Deploy to Render" button (https://render.com/deploy?repo=https://github.com/open-qr/openqr).
+# autoDeployTrigger is off on purpose: button installs should not redeploy when
+# this repo's main moves. The container listens on 3000 (see Dockerfile); Render
+# routes HTTP to it.
+services:
+  - type: web
+    name: openqr
+    runtime: docker
+    plan: starter
+    healthCheckPath: /
+    autoDeployTrigger: off

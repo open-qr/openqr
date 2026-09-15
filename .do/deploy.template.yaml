@@ -1,0 +1,23 @@
+# Deploy-to-DigitalOcean button template. The button reads this file from the
+# repo root's .do/ directory; everything MUST sit under the top-level `spec:`
+# key or the button fails with "Missing app spec file".
+#
+# DigitalOcean builds the Dockerfile from the repo (first build takes a few
+# minutes). Alternative, once the image exists: swap the `github:` block for
+#   image:
+#     registry_type: GHCR
+#     registry: ghcr.io
+#     repository: open-qr/openqr
+#     tag: latest
+# so deploys pull the published image instead of rebuilding (unverified against
+# App Platform's current GHCR handling for public images; validate before use).
+spec:
+  name: openqr
+  services:
+    - name: web
+      github:
+        repo: open-qr/openqr
+        branch: main
+        deploy_on_push: false
+      instance_size_slug: basic-xxs
+      http_port: 3000
