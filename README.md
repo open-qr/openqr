@@ -148,7 +148,7 @@ Or with [`docker-compose.yml`](./docker-compose.yml):
 docker compose up -d          # update later: docker compose pull && docker compose up -d
 ```
 
-Pin a version tag in production (`ghcr.io/open-qr/openqr:1.0.0`); `latest`
+Pin a version tag in production (`ghcr.io/open-qr/openqr:1.0.1`); `latest`
 moves with every release. The container is a prebuilt, non-root standalone
 server with a healthcheck, and carries `LICENSE` and `NOTICE` inside the image.
 
