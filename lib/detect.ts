@@ -46,6 +46,7 @@ export const SMART_TYPES: SmartType[] = ["url", "text", "email", "phone"];
 
 /** Structured types that need their own multi-field form. */
 export const STRUCTURED_TYPES: { id: PayloadType; labelKey: TranslationKey }[] = [
+  { id: "vcard", labelKey: "type.vcard" },
   { id: "wifi", labelKey: "type.wifi" },
   { id: "geo", labelKey: "type.geo" },
   { id: "email", labelKey: "type.emailWithSubject" },

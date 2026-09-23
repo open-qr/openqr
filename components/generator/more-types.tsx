@@ -1,6 +1,6 @@
 "use client";
 
-import { Wifi, MapPin, Mail, MessageSquare, MessageCircle, ChevronDown } from "lucide-react";
+import { Wifi, MapPin, Mail, MessageSquare, MessageCircle, Contact, ChevronDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useQrStore } from "@/lib/store";
 import { STRUCTURED_TYPES } from "@/lib/detect";
@@ -8,6 +8,7 @@ import type { PayloadType } from "@/lib/payloads";
 import { useI18n } from "@/lib/i18n/locale-provider";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  vcard: Contact,
   wifi: Wifi,
   geo: MapPin,
   email: Mail,

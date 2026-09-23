@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Link2, Type, Mail, Phone, ChevronDown, Wifi, MapPin, MessageSquare, MessageCircle } from "lucide-react";
+import { Link2, Type, Mail, Phone, ChevronDown, Wifi, MapPin, MessageSquare, MessageCircle, Contact } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -22,6 +22,7 @@ const ICONS: Record<SmartType, React.ComponentType<{ className?: string }>> = {
 };
 
 const STRUCTURED_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  vcard: Contact,
   wifi: Wifi,
   geo: MapPin,
   email: Mail,

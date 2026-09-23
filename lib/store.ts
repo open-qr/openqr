@@ -14,7 +14,21 @@ const emptyValues = (): Record<PayloadType, FieldValues> => ({
   whatsapp: { phone: "", message: "" },
   wifi: { ssid: "", password: "", encryption: "WPA", hidden: false },
   geo: { lat: "", lng: "" },
+  vcard: {
+    firstName: "", lastName: "", organization: "", title: "",
+    mobilePhone: "", generalPhone: "", personalEmail: "", generalEmail: "",
+    website: "", street: "", postalCode: "", city: "", country: "",
+  },
 });
+
+/** Fill newly added types and fields when restoring older configurations. */
+function withDefaultValues(values?: Partial<Record<PayloadType, FieldValues>>) {
+  const defaults = emptyValues();
+  for (const type of Object.keys(defaults) as PayloadType[]) {
+    defaults[type] = { ...defaults[type], ...values?.[type] };
+  }
+  return defaults;
+}
 
 interface QrState {
   /** The single smart-input string (auto mode). */
@@ -62,7 +76,10 @@ export const useQrStore = create<QrState>()(
         }),
       setStyle: (patch) => set((st) => ({ style: { ...st.style, ...patch } })),
       clear: () => set({ input: "", override: null, structured: null, values: emptyValues() }),
-      load: (state) => set(state),
+      load: (state) => set((current) => ({
+        ...state,
+        values: withDefaultValues(state.values ?? current.values),
+      })),
 
       activeType: () => {
         const { structured, override, input } = get();
@@ -77,6 +94,13 @@ export const useQrStore = create<QrState>()(
         return buildPayload(t, smartFields(t, input));
       },
     }),
-    { name: "openqr-config", version: 2 }
+    {
+      name: "openqr-config",
+      version: 2,
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<QrState> | undefined;
+        return { ...current, ...saved, values: withDefaultValues(saved?.values) };
+      },
+    }
   )
 );

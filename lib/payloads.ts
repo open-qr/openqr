@@ -6,6 +6,7 @@ export type PayloadType =
   | "sms"
   | "whatsapp"
   | "wifi"
+  | "vcard"
   | "geo";
 
 export type FieldValues = Record<string, string | boolean>;
@@ -18,16 +19,51 @@ export const PAYLOAD_TYPES: { id: PayloadType; label: string }[] = [
   { id: "sms", label: "SMS" },
   { id: "whatsapp", label: "WhatsApp" },
   { id: "wifi", label: "Wi-Fi" },
+  { id: "vcard", label: "vCard / Contact" },
   { id: "geo", label: "Location" },
 ];
 
 const s = (v: string | boolean | undefined) => (v == null ? "" : String(v)).trim();
 
-/** Escape special chars for Wi-Fi / vCard payloads. */
+/** Escape special chars for Wi-Fi payloads. */
 const esc = (v: string) => v.replace(/([\\;,:"])/g, "\\$1");
 
 export function buildPayload(type: PayloadType, f: FieldValues): string {
   switch (type) {
+    case "vcard": {
+      const firstName = s(f.firstName);
+      const lastName = s(f.lastName);
+      if (!firstName && !lastName) return "";
+      const escapeText = (value: string) => value
+        .replace(/\\/g, "\\\\")
+        .replace(/\r\n|\r|\n/g, "\\n")
+        .replace(/([;,])/g, "\\$1");
+      const lines = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${[lastName, firstName, "", "", ""].map(escapeText).join(";")}`,
+        `FN:${escapeText([firstName, lastName].filter(Boolean).join(" "))}`,
+      ];
+      const optionalFields = [
+        ["ORG", "organization"],
+        ["TITLE", "title"],
+        ["TEL;TYPE=CELL", "mobilePhone"],
+        ["TEL;TYPE=VOICE", "generalPhone"],
+        ["EMAIL;TYPE=HOME,INTERNET", "personalEmail"],
+        ["EMAIL;TYPE=INTERNET", "generalEmail"],
+      ];
+      for (const [property, key] of optionalFields) {
+        const value = s(f[key]);
+        if (value) lines.push(`${property}:${escapeText(value)}`);
+      }
+      // URL is a URI value, not vCard TEXT; preserve URI punctuation.
+      const website = s(f.website).replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+      if (website) lines.push(`URL:${website}`);
+      const address = ["", "", s(f.street), s(f.city), "", s(f.postalCode), s(f.country)];
+      if (address.some(Boolean)) lines.push(`ADR:${address.map(escapeText).join(";")}`);
+      lines.push("END:VCARD");
+      return lines.join("\r\n") + "\r\n";
+    }
     case "url": {
       const v = s(f.url);
       if (!v) return "";
