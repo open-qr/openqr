@@ -71,6 +71,25 @@ export function PayloadFields() {
   const v = values;
 
   switch (type) {
+    case "vcard":
+      return (
+        <div className="space-y-3">
+          <p className="text-xs text-muted-foreground">{t("payloadFields.contactNameRequired")}</p>
+          <Text k="firstName" label={t("payloadFields.firstName")} />
+          <Text k="lastName" label={t("payloadFields.lastName")} />
+          <Text k="organization" label={t("payloadFields.organization")} />
+          <Text k="title" label={t("payloadFields.title")} />
+          <Text k="mobilePhone" label={t("payloadFields.mobilePhone")} type="tel" />
+          <Text k="generalPhone" label={t("payloadFields.generalPhone")} type="tel" />
+          <Text k="personalEmail" label={t("payloadFields.personalEmail")} type="email" />
+          <Text k="generalEmail" label={t("payloadFields.generalEmail")} type="email" />
+          <Text k="website" label={t("payloadFields.website")} type="url" />
+          <Text k="street" label={t("payloadFields.street")} />
+          <Text k="postalCode" label={t("payloadFields.postalCode")} />
+          <Text k="city" label={t("payloadFields.city")} />
+          <Text k="country" label={t("payloadFields.country")} />
+        </div>
+      );
     case "email":
       return (
         <div className="space-y-3">
