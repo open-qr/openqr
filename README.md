@@ -19,6 +19,10 @@ implementation. It is deliberately small and easy to fork.
 If OpenQR is useful to you, a star on the repository helps other
 people find it. That is the whole ask.
 
+## Research
+
+The design guidance in this tool is measured, not guessed. [The Scannability Benchmark](https://openqr.uk/research/scannability-benchmark) (DOI [10.5281/zenodo.24352636](https://doi.org/10.5281/zenodo.24352636)) tests how far QR styling can go across four open-source decoders: logo-occlusion ceilings, the ~3 px/module resolution floor, contrast and inversion limits. Its Scannability Margin score ships in the hosted generator at [openqr.uk](https://openqr.uk). Code and dataset: [open-qr/scannability-benchmark](https://github.com/open-qr/scannability-benchmark).
+
 ## Hosted version: free API, MCP server and editable codes
 
 Everything in this repo is and stays free, with no watermark and no expiry. The
